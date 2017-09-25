@@ -8,10 +8,21 @@ img {height: 70px; float: left}
 
 li {padding-top: 20px}
 
+
 #wrapper {background-color: #ADD8E6; width: 40em; padding: 5px; margin: auto}
 
 #header {height: 75px; border-bottom-style: dotted; border-bottom-width: 2px; border-bottom-color: #B2BCC6}
 
+#footer {border-top-style: dotted; border-top-width: 2px; border-top-color: #B2BCC6}
+
+
 #nav {width: 16em; float: left}
 
 #container {width: 23em; float: left}
+
+.clearme {float: none}
+
+.snippet {border-left-style: solid; border-left-width: 1px; border-left-color: #003399; padding-left: 5px }
+
+.quote {font-style: italic }
+
