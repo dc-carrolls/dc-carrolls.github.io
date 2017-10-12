@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "uk.org.dulwich.guide"
+        versionCode="10"
+        version   = "1.1.0">
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Dulwich College Guide</name>
+
+    <description>
+        A Guide to Dulwich College
+    </description>
+
+    <author href="www.dulwich.org.uk" email="carrolls@dulwich.org.uk">
+        Steven Carroll
+    </author>
+    <icon src="Icon.png"/>
+    <gap:splash src="Default.png"/>
+
+
+</widget>
