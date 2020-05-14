@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Quiz</title>
+</head>
+<body>
+
+
+ <!-- From High Score -->
+<p>
+  <label id="twoPlus2Label">
+    2 + 2 is: 
+    <input id="twoPlus2Input" type="range" max="10">
+    <span id="twoPlus2answer"></span>
+  </label>
+</p>
+
+
+<button id="button">
+  Answers
+</button>
+
+<h1>Your Score was: <span id="score">...</span> out of 2</h1>
+
+
+
+<script>
+function clickAction() {
+  score.textContent = answer.value
+  
+}
+
+button.onclick = clickAction;
+
+function twoPlus2_update() {
+  twoPlus2answer.textContent = twoPlus2Input.value;
+}
+
+twoPlus2Input.oninput = twoPlus2_update;
+
+</script>
+
+</body>
+
+
+</html>
