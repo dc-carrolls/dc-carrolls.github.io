@@ -1,0 +1,29 @@
+<html>
+<body>
+
+<h2>Problem</h2>    
+Build a desktop Raspberry Pi v4 computer to support code club, student projects and competitions
+Needed plenty of storage for images of SD Cards for various projects.
+Needs to have resilient storage as system will not be supported/backed up by computer services.
+
+<h2>Design</h2>
+Initially looked at a two disk HDD enclosure with hardware raid controller. Researched showed that this would
+not provide the resilience I expected. RAID is designed for high availability rather than resilience 
+Opted for a fast SSD primary drive (2TB) and a cheap HDD secondary drive 
+FIle system ext4 - now supported in Win10 - or use utility
+
+<ul>
+    <li>Flash latest image to SD card or:</li>
+    <li>sudo apt-get update</li>
+    <li>sudo apt-get upgrade -y</li>
+    <li>sudo apt-get dist-upgrade -y</li>
+    <li>Used Raspberry Pi Imager to copy latest Raspbian onto USB Drive</li>
+
+    <li>sudo apt-get install hdparm</li>
+
+    cogg#1619
+</ul>
+
+</body>
+
+</html>
