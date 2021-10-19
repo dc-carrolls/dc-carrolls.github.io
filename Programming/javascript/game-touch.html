@@ -28,8 +28,8 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
         window.addEventListener('touchmove', function (e) {
-            myGameArea.x = e.touches[0].screenX;
-            myGameArea.y = e.touches[0].screenY;
+            myGameArea.x = e.touches[0].clientX;
+            myGameArea.y = e.touches[0].clientY;
         })
     }, 
     clear : function(){
