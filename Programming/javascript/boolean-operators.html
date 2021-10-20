@@ -7,7 +7,7 @@
 <script>
 
 function evaluateLogic(){
-  let x = document.forms["frmLogic"]["inputA"].value;
+  let x = document.forms["frmLogic"]["inputB"].value;
  /* if (x == "") {
     alert("Name must be filled out");
     return false;
@@ -21,8 +21,14 @@ function evaluateLogic(){
     <label for="inputA">Choose Input A:</label>
     <select id="inputA" name="inputA" size="2">
       <option value=True>True</option>
-      <option value=Talse>False</option>
+      <option value=False>False</option>
     </select><br><br>
+    <label for="inputB">Choose Input B:</label>
+    <select id="inputB" name="inputB" size="2">
+      <option value=True>True</option>
+      <option value=False>False</option>
+    </select><br><br>
+
     <input type="submit">
   </form>
   
