@@ -6,18 +6,15 @@
 <body>
 <script>
 
-function evaluateLogic(){
-  let x = document.forms["frmLogic"]["inputB"].value;
- /* if (x == "") {
-    alert("Name must be filled out");
-    return false;
-  } */ 
-  alert(x)
+function evaluateORLogic(){
+  let a = document.forms["frmLogic"]["inputA"].value;
+  let b = document.forms["frmLogic"]["inputB"].value;
+  alert( a || b);
 }
 
 </script>
-
-<form name="frmLogic" onsubmit=evaluateLogic()>
+<h1>JavaScript Boolean Operator Demo</h1>
+<form name="frmLogic">
     <label for="inputA">Choose Input A:</label>
     <select id="inputA" name="inputA" size="2">
       <option value=True>True</option>
@@ -27,10 +24,10 @@ function evaluateLogic(){
     <select id="inputB" name="inputB" size="2">
       <option value=True>True</option>
       <option value=False>False</option>
-    </select><br><br>
-
-    <input type="submit">
+    </select>
   </form>
+
+  <button onclick=evaluateORlogic()>a || b</button>
   
 </body>
 </html>
