@@ -19,7 +19,7 @@ function evaluateORLogic(){
   } else if (a === 'false') {
       b = false;
   }
-  alert(a || b);
+  document.getElementById("result").textContent=(a || b);
 }
 
 function evaluateANDLogic(){
@@ -35,7 +35,7 @@ function evaluateANDLogic(){
   } else if (a === 'false') {
       b = false;
   }
-  alert(a && b);
+  document.getElementById("result").textContent=(a && b);
 }
 
 function evaluateNOTLogic(){
@@ -45,7 +45,7 @@ function evaluateNOTLogic(){
   } else if (a === 'false') {
       a = false;
   }
-  alert(!a);
+  document.getElementById("result").textContent=!a;
 }
 
 </script>
@@ -69,6 +69,8 @@ function evaluateNOTLogic(){
   <button type="button" onclick="evaluateORLogic()">A OR B</button>
   <button type="button" onclick="evaluateANDLogic()">A AND B</button>
   <button type="button" onclick="evaluateNOTLogic()">NOT A</button>
-  
+  <br>
+  <br>
+  <h2>The result is:&nbsp;<span id="result"></span></h2>
 </body>
 </html>
