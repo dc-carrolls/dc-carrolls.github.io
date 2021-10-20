@@ -8,8 +8,44 @@
 
 function evaluateORLogic(){
   let a = document.forms["frmLogic"]["inputA"].value;
+  if (a === 'true') {
+      a = true;
+  } else if (a === 'false') {
+      a = false;
+  }
   let b = document.forms["frmLogic"]["inputB"].value;
-  alert( a || b);
+  if (b === 'true') {
+      b = true;
+  } else if (a === 'false') {
+      b = false;
+  }
+  alert(a || b);
+}
+
+function evaluateANDLogic(){
+  let a = document.forms["frmLogic"]["inputA"].value;
+  if (a === 'true') {
+      a = true;
+  } else if (a === 'false') {
+      a = false;
+  }
+  let b = document.forms["frmLogic"]["inputB"].value;
+  if (b === 'true') {
+      b = true;
+  } else if (a === 'false') {
+      b = false;
+  }
+  alert(a && b);
+}
+
+function evaluateNOTLogic(){
+  let a = document.forms["frmLogic"]["inputA"].value;
+  if (a === 'true') {
+      a = true;
+  } else if (a === 'false') {
+      a = false;
+  }
+  alert(!a);
 }
 
 </script>
@@ -17,17 +53,22 @@ function evaluateORLogic(){
 <form name="frmLogic">
     <label for="inputA">Choose Input A:</label>
     <select id="inputA" name="inputA" size="2">
-      <option value=True>True</option>
-      <option value=False>False</option>
+      <option value=true>true</option>
+      <option value=false>false</option>
+      <option value="banana">banana</option>
     </select><br><br>
     <label for="inputB">Choose Input B:</label>
     <select id="inputB" name="inputB" size="2">
-      <option value=True>True</option>
-      <option value=False>False</option>
+      <option value=true>true</option>
+      <option value=false>false</option>
+      <option value="banana">banana</option>
     </select>
   </form>
-
-  <button onclick=evaluateORlogic()>Test</button>
+  <br>
+  <br>
+  <button type="button" onclick="evaluateORLogic()">A OR B</button>
+  <button type="button" onclick="evaluateANDLogic()">A AND B</button>
+  <button type="button" onclick="evaluateNOTLogic()">NOT A</button>
   
 </body>
 </html>
