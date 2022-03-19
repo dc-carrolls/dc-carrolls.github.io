@@ -34,9 +34,12 @@ window.preload = function () {
     }
 // -----
 
+
+showMobileControls(true, true, true,false);
 var grpSnow = createGroup();
 var snowFlake;
 createEdgeSprites();
+
 for (var i=0;i<50;i++) {
   //fill("white");
   snowFlake = createSprite(randomNumber(0,390), randomNumber(0,390),10,10);
@@ -45,15 +48,41 @@ for (var i=0;i<50;i++) {
   grpSnow.add(snowFlake);
 }
 
+var player = createSprite(200,200,30,30);
+player.shapeColor="red";
+//player.alpha = 1;
 
 function draw() {
   //logic
-  for (var i = 0; i < 50; i++ ){
+  var i;
+  for (i = 0; i < grpSnow.length; i++ ){
     if (grpSnow.get(i).isTouching(bottomEdge)) {
       grpSnow.get(i).x = randomNumber(0,390);
       grpSnow.get(i).y = 0;
     }
   }
+  
+  if (keyWentDown("up")){
+    player.velocityY = -1;
+  } else if (keyWentDown("down")) {
+    player.velocityY = 1;
+  } else if (keyWentDown("right")) {
+    player.velocityX = 1;
+  } else if (keyWentDown("left")) {
+    player.velocityX = -1; 
+  } else if (keyWentUp("up") || keyWentUp("down")) {
+    player.velocityY = 0;
+    player.velocityX = 0;
+  } else if (keyWentUp("left") || keyWentUp("right")) {
+    player.velocityY = 0;
+    player.velocityX = 0;
+  }
+  for (i = 0; i < grpSnow.length; i++ ){
+    if (grpSnow.get(i).isTouching(player)) {
+      grpSnow.get(i).destroy();
+    }
+  }
+    
   
   background("black");
   drawSprites();
