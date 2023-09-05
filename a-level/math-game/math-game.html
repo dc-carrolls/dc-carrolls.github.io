@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+		body, input { font-family: Arial, Helvetica, "sans-serif"; font-size: 15px; }
+</style>
+
+</head>
+<body>
+
+<p>
+
+  <label for="fname">First number:</label><br>
+  <input type="text" id="fnumber1" name="fnumber1"><br>
+  <label for="lname">Second number:</label><br>
+  <input type="text" id="fnumber2" name="fnumber2">
+
+<p>
+<button onclick="myFunction1()">+</button>
+<p>
+<button onclick="myFunction2()">-</button>
+<p>
+<button onclick="myFunction3()">*</button>
+<p>
+<button onclick="myFunction4()">/</button>
+
+<p>
+  <label for="fname">My answer:</label><br>
+  <input type="text" id="guess" name="guess"><br>
+  <label for="lname">Correct answer:</label><br>
+  <input type="text" id="answer" name="answer">
+
+<p>
+<button onclick="reveal()">Show answer</button>
+<p>
+<label for="lname">Number wrong:</label>
+<input type="text" id="numberwrong" name="answer">
+<p>
+<label for="lname">Number Correct:</label>
+<input type="text" id="numbercorrect" name="answer">
+<p>
+<label for="lname">Percentage correct:</label>
+<input type="text" id="percentagecorrect" name="answer">
+
+<p id="demo"></p>
+
+<script>
+
+var operator=0;
+var wrong=0
+var correct=0
+var numberofquestions=0
+
+
+function myFunction1() {
+  operator=1
+  
+}
+
+function myFunction2() {
+ operator=2;
+
+}
+
+function myFunction3() {
+  operator=3;
+ 
+}
+
+function myFunction4() {
+  operator=4;
+ 
+}
+
+function reveal(){
+
+  numberofquestions=numberofquestions+1
+  if (operator==1){
+      
+      document.getElementById("answer").value = parseFloat(document.getElementById("fnumber1").value)+parseFloat(document.getElementById("fnumber2").value);
+
+  } else if (operator==2){
+   document.getElementById("answer").value = parseFloat(document.getElementById("fnumber1").value)-parseFloat(document.getElementById("fnumber2").value)
+;
+}
+   else if (operator==3){
+document.getElementById("answer").value = parseFloat(document.getElementById("fnumber1").value)*parseFloat(document.getElementById("fnumber2").value)
+;
+} 
+	else if (operator==4){
+  document.getElementById("answer").value = parseFloat(document.getElementById("fnumber1").value)/parseFloat(document.getElementById("fnumber2").value);
+}
+
+
+if (document.getElementById("answer").value==document.getElementById("guess").value){
+ correct=correct+1;
+}
+else  {
+ wrong=wrong+1;
+}
+document.getElementById("numberwrong").value=wrong;
+document.getElementById("numbercorrect").value=correct
+document.getElementById("percentagecorrect").value=correct/numberofquestions*100
+}
+</script>
+</body>
+</html>
