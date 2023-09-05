@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Query String Example</title>
+	<script>
+		window.onload = function() {
+			// Get query string parameters
+			params = new URLSearchParams(window.location.search);
+
+			// Get values and display them on the page
+			outputDiv = document.getElementById("output");
+			outputDiv.innerHTML = params.get("number") + params.get("letter")  ;
+			
+		}
+	</script>
+</head>
+<body>
+	<h1>Seat Booked: <span id="output"></span></h1>
+</body>
+</html>

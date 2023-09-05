@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="test.css">
+<style>
+    body {background-color: rgb(189, 226, 43);}
+    p {color:chocolate}
+    #content {background-color: blue;color:white}
+    .emergency {background-color: yellow;color: red;}
+    .borders {border-style: double;border-width: 3px;border-color: aqua;}
+</style>
+
+</head>
+<!-- There is no HTML Neck-->
+<body>
+    <!--Use of inline CSS-->
+    <h1 style="background-color: aquamarine;">Heading Level 1</h1>
+    <h2 class="borders">Heading Level 2</h2>
+    <h3 class="emergency borders">Heading Level 3</h3>
+
+    <img src="https://www.dulwich.org.uk/uploaded/themes/redesign_21/images/dc-founded-1619.svg" alt="Dulwich College Banner" height="100" width="300">
+    <br>Click <a href="https://www.dulwich.org.uk/senior-school">here</a>
+        
+    <div id="content">
+        Blah Blah Blah
+    </div>
+
+    <form name="frmTimesTable" onsubmit="return timesTable()">
+        Times Table:<br>
+        Number <input type="text" name="number"><br>
+        Rows <input type="text" name="rows"><br>
+        <p id="answer">Answer is:</p>
+        <input type="submit" value="Press Me!">
+    </form>   
+    
+       
+    <h4>Seat Booking</h4>   
+    <form name="frmSeat" action="./booking.html" onsubmit="return frmValidation()">
+        Seat Letter [A to F]: <input type="text" name="letter"><br>
+        Seat Number [1 to 9]: <input type="text" name="number"><br>
+        Status: <span id="booking"></span><br>
+        <input type="submit" value="Book!">
+    </form>   
+
+    <p id="para1">Paragraph 1</p>
+    <p class="emergency">Paragraph 2</p>
+    <p>Paragraph 3</p>
+    <p>Paragraph 4</p>
+    <button onclick="myOutputTest2()">Para 1</button>
+
+    <ol>
+        <li>Ordered list item 1</li>
+        <li>Ordered list item 2</li>        
+        <li>Ordered list item 3</li>
+        <li>Ordered list item 4</li>
+        <li>Ordered list item 5</li>
+    </ol>
+        
+    <ul>
+        <li>Unordered list item 1</li>
+        <li>Unordered list item 2</li>        
+        <li>Unordered list item 3</li>
+        <li>Unordered list item 4</li>
+        <li>Unordered list item 5</li>
+    </ul>    
+
+    <button onclick="myOutputTest3()">Click</button>
+   
+
+
+
+    <script>
+        function frmValidation() {
+            letter = document.forms["frmSeat"]["letter"].value;
+            number = parseInt(document.forms["frmSeat"]["number"].value);
+            if ((number > 0 && number < 10) && (letter >= "A" && letter < "G")) {
+                return true;    
+            } else {
+                bookingElement = document.getElementById("booking");
+                bookingElement.innerHTML = "Error";
+                return false;
+            }
+        }
+
+        function myOutputTest1(){
+            alert("Hello, World!");
+        }
+
+        function myOutputTest2(){
+            myElement = document.getElementById("para1");
+            myElement.innerHTML = "Hello, World";
+        }
+
+        function myOutputTest3(){
+            document.write("Hello, World!");
+        }
+
+        function calcAgeInMonths() {
+            years = parseInt(document.forms["ageForm"]["years"].value);
+            months = parseInt(document.forms["ageForm"]["months"].value);
+            totalMonths = years * 12 + months;
+            //alert("Age in Months is " + totalMonths)
+            answerElement = document.getElementById("answer");
+            answerElement.innerHTML = "Answer is: " + totalMonths + " Months";
+            return false;
+
+        }
+        function timesTable() {
+            number = parseInt(document.forms["frmTimesTable"]["number"].value);
+            rows = parseInt(document.forms["frmTimesTable"]["rows"].value);
+            output = ""
+            // for (i=1;i<=rows;i++){
+            //     output = output + i + " times " + number + " equals " + (i*number) + "<br>";
+            // }
+            i = 1;
+            do {
+                output = output + i + " times " + number + " equals " + (i*number) + "<br>";
+                i++;
+            } while (i<=rows)
+            answerElement = document.getElementById("answer");
+            answerElement.innerHTML = output; 
+            return false;        
+        }
+        
+    </script>
+
+
+
+</body>
+</html>

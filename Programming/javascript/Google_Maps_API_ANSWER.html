@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://maps.googleapis.com/maps/api/js"></script>
+<script>
+function G_Map() {
+  var Gmap1 = {
+    center:new google.maps.LatLng(40.742835, -73.882198),
+    zoom:7,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var Gmap2 = {
+    center: new google.maps.LatLng(51.508742,-0.120850),
+    zoom:13,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+  var map=new google.maps.Map(document.getElementById("googleMap"),Gmap1);
+  var map=new google.maps.Map(document.getElementById("googleMap2"),Gmap2);
+}
+google.maps.event.addDomListener(window, 'load', G_Map);
+</script>
+</head>
+
+<body>
+<div id="googleMap" style="width:500px;height:380px;"></div>
+<br>
+<div id="googleMap2" style="width:500px;height:380px;"></div>
+</body>
+
+</html>

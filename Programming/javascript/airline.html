@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<form name="seatBooking" action="./booking.html" onsubmit="return frmValidation()">
+
+Row Number [1-9]: <input type="text" name="number" id="numInput">
+Seat Letter [A-F]:<input type="text" name="letter">
+<input type="submit" value="Submit">
+</form>
+<span id="errorMsg" style="color:red"></span>
+
+<script>
+    function frmValidation() {
+        num = document.forms["seatBooking"]["number"].value;
+        if (num < 1 || num > 9) {
+            myElement=document.getElementById("errorMsg")
+            myElement.innerHTML = "Error"
+            numElement=document.getElementById("numInput")
+            numElement.style="border-color:red;";
+            return false;
+        }
+        return true
+    }
+</script>
+</body>
+</html>
