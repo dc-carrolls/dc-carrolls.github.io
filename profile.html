@@ -16,5 +16,46 @@
   <li>MSc Computer Science</li>
   <li>BSc Applied Mathematics</li>  
   </ol>
+  
+  <form id="MyForm" onsubmit="checkAge()">
+    Test<input type="text" id="age" value="10"/>
+  <!--/form-->
+
+
+  <p id="box" style="color:white">Hello</p>
+
+  <button type="button" onclick="srcFunction('goodbye')">Test</button>
+  </button>
+
+  <button type="button" onclick="checkAge()">Test 2 </button>
+
+  <script>
+    function srcFunction(word) {
+      alert("The page is about to change!");
+      var x = document.getElementById("box");
+      x.innerHTML =word;
+      x.style.fontSize = "25px";           
+      x.style.color = "yellow";
+
+    }
+
+    function killPage() {
+      document.write("<h1>Goodbye World!</h1>");
+    }
+
+    function checkAge() {
+      var x = document.getElementById("age");
+      if (x.value > 17) {
+        alert("old")
+      }
+      else {
+        alert("young")
+      }
+    }
+
+
+  </script>
+  
+
 </body>
 </html>

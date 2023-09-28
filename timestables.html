@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Times Tables</title>
+</head>
+<body>
+    <a href="#Bottom" onclick="timesTableGen()">Bottom</a>
+    <h1>Times <strong>Tables</strong> Calculator</h1>
+    <form action="profile.html" method="post" onsubmit="return timesTableGen()">
+        <p>Times Table to create: <input type="text" value="1" id="number"/></p>
+        <p>Rows required: <input type="text" value="1" id="rows"/></p>
+
+        <button type="submit">Generate</button>
+        <button type="reset">Reset</button>
+        <button onclick="test()">Test Generate</button>
+     
+    </form>
+
+    <div id="output">
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+ --------------------------------
+ <br>
+ <br>
+ <br>
+ <p id="Bottom">Hello</p>   
+<script>
+
+    function timesTableGen(){
+        var table = "";
+        var num = document.getElementById("number").value;
+        var limit = document.getElementById("rows").value;
+        if (num < 1 || limit < 1) {
+            alert("Error");
+        } else {
+            for (var i=1;i<=limit;i++) {
+                table = table + "<p>"+i+" times " + num + " equals " + (i*num) +"</p>"
+            }
+            document.getElementById("output").innerHTML = table;
+        }   
+        return false;
+    }
+
+    function test(){
+        alert("test")
+    }
+</script>    
+</body>
+</html>

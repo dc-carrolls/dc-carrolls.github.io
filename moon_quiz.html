@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        /* Add some basic styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz</h1>
+        <form id="quiz-form">
+            <!-- Question 1: Text Input -->
+            <h2>Question 1</h2>
+            <p>How far is the Moon from the Earth?</p>
+            <input type="text" name="q1" placeholder="Enter your answer" required><br>
+
+            <!-- Question 2: Multiple Choice -->
+            <h2>Question 2</h2>
+            <p>How many moons does Saturn have?</p>
+            <label>
+                <input type="radio" name="q2" value="0"> 0
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="53"> 53
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="82"> 82
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="62"> 62
+            </label><br>
+
+            <!-- Question 3: Checkbox -->
+            <h2>Question 3</h2>
+            <p>Which of these are moons of Jupiter? (Select two)</p>
+            <label>
+                <input type="checkbox" name="q3" value="io"> Io
+            </label><br>
+            <label>
+                <input type="checkbox" name="q3" value="europa"> Europa
+            </label><br>
+            <label>
+                <input type="checkbox" name="q3" value="ganymede"> Ganymede
+            </label><br>
+            <label>
+                <input type="checkbox" name="q3" value="phobos"> Phobos
+            </label><br>
+
+            <!-- Question 4: Dropdown -->
+            <h2>Question 4</h2>
+            <p>What is the biggest moon in the solar system?</p>
+            <select name="q4">
+                <option value="ganymede">Ganymede</option>
+                <option value="titan">Titan</option>
+                <option value="callisto">Callisto</option>
+                <option value="io">Io</option>
+                <option value="europa">Europa</option>
+            </select><br>
+
+            <input type="submit" value="Submit">
+        </form>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // JavaScript for marking the quiz
+        const quizForm = document.getElementById("quiz-form");
+        const resultsContainer = document.getElementById("results");
+
+        quizForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const answers = {
+                q1: document.querySelector('input[name="q1"]').value.trim(),
+                q2: document.querySelector('input[name="q2"]:checked').value,
+                q3: [...document.querySelectorAll('input[name="q3"]:checked')].map(checkbox => checkbox.value),
+                q4: document.querySelector('select[name="q4"]').value,
+            };
+
+            const correctAnswers = {
+                q1: "384,400 kilometers",
+                q2: "82",
+                q3: ["io", "europa"],
+                q4: "ganymede",
+            };
+
+            let score = 0;
+
+            for (const key in answers) {
+                if (Array.isArray(answers[key])) {
+                    // Check if arrays (for checkboxes) match
+                    if (
+                        answers[key].length === correctAnswers[key].length &&
+                        answers[key].every(value => correctAnswers[key].includes(value))
+                    ) {
+                        score++;
+                    }
+                } else {
+                    // Check other inputs
+                    if (answers[key].toLowerCase() === correctAnswers[key].toLowerCase()) {
+                        score++;
+                    }
+                }
+            }
+
+            const percentage = (score / Object.keys(answers).length) * 100;
+
+            resultsContainer.innerHTML = `You scored ${score} out of ${Object.keys(answers).length}. (${percentage}%)`;
+        });
+    </script>
+</body>
+</html>
