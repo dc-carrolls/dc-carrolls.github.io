@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Flip Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .card-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .card, .temporary {
+            width: 80px;
+            height: 120px;
+            background-color: gray;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            user-select: none;
+            position: relative;
+            draggable: true;
+        }
+        .temporary {
+            background-color: lightblue;
+            color: black;
+            margin-top: 10px;
+        }
+        .index-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .index {
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleButton">Toggle All Cards</button>
+    <div class="index-container" id="indexes"></div>
+    <div class="card-container" id="cards"></div>
+    <div class="temporary" id="temporary" draggable="true">Temp</div>
+
+    <script>
+        const cardContainer = document.getElementById('cards');
+        const tempCard = document.getElementById('temporary');
+        const toggleButton = document.getElementById('toggleButton');
+        const indexContainer = document.getElementById('indexes');
+        let draggedCard = null;
+
+        function createCard(value) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.value = value;
+            card.dataset.flipped = "false";
+            card.textContent = "?";
+            card.draggable = true;
+
+            card.addEventListener('click', () => {
+                if (card.dataset.flipped === "false") {
+                    card.textContent = card.dataset.value;
+                    card.dataset.flipped = "true";
+                } else {
+                    card.textContent = "?";
+                    card.dataset.flipped = "false";
+                }
+            });
+
+            card.addEventListener('dragstart', (e) => {
+                draggedCard = card;
+                e.dataTransfer.setData("text/plain", card.dataset.value);
+            });
+
+            card.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            card.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (draggedCard) {
+                    let newValue = draggedCard.dataset ? draggedCard.dataset.value : draggedCard.textContent;
+                    if (newValue && newValue !== "Temp") {
+                        card.dataset.value = newValue;
+                        if (card.dataset.flipped === "true") {
+                            card.textContent = newValue;
+                        }
+                    }
+                }
+            });
+
+            return card;
+        }
+
+        tempCard.addEventListener('dragstart', (e) => {
+            if (tempCard.textContent !== "Temp") {
+                draggedCard = tempCard;
+                e.dataTransfer.setData("text/plain", tempCard.dataset.value);
+            }
+        });
+
+        tempCard.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        tempCard.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedCard) {
+                let newValue = draggedCard.dataset ? draggedCard.dataset.value : draggedCard.textContent;
+                if (newValue && newValue !== "Temp") {
+                    tempCard.textContent = newValue;
+                    tempCard.dataset.value = newValue;
+                }
+            }
+        });
+
+        cardContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedCard === tempCard) {
+                const dropTarget = e.target.closest('.card');
+                if (dropTarget) {
+                    dropTarget.dataset.value = tempCard.dataset.value;
+                    if (dropTarget.dataset.flipped === "true") {
+                        dropTarget.textContent = tempCard.dataset.value;
+                    }
+                }
+            }
+        });
+
+        function generateUniqueNumbers(count, min, max) {
+            const numbers = new Set();
+            while (numbers.size < count) {
+                numbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            return Array.from(numbers);
+        }
+
+        function initializeCards() {
+            const values = generateUniqueNumbers(6, 1, 20);
+            values.forEach((value, index) => {
+                let indexLabel = document.createElement('div');
+                indexLabel.classList.add('index');
+                indexLabel.textContent = index;
+                indexContainer.appendChild(indexLabel);
+
+                let card = createCard(value);
+                cardContainer.appendChild(card);
+            });
+        }
+
+        toggleButton.addEventListener('click', () => {
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.dataset.flipped === "false") {
+                    card.textContent = card.dataset.value;
+                    card.dataset.flipped = "true";
+                } else {
+                    card.textContent = "?";
+                    card.dataset.flipped = "false";
+                }
+            });
+        });
+
+        initializeCards();
+    </script>
+</body>
+</html>
