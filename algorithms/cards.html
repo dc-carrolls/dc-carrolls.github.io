@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Card Flip Game with Eraser</title>
+  <title>Cards for Sorting and Searching</title>
   <style>
     body {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
       font-family: Arial, sans-serif;
+      background-color: #d9ef5e;
+
+      ;
     }
     .note-area {
       width: 300px;
       height: 400px;
       border: 2px solid black;
       margin-right: 20px;
-      background-color: lightgray;
+      background-color: #f6f5f0;
       touch-action: none; /* allows pointer events for pen or touch */
     }
     .main-content {
@@ -32,7 +35,7 @@
     .card, .temporary {
       width: 80px;
       height: 120px;
-      background-color: gray;
+      background-color: skyblue;
       color: white;
       display: flex;
       align-items: center;
@@ -43,12 +46,6 @@
       user-select: none;
       position: relative;
       draggable: true;
-    }
-    .temporary {
-      background-color: lightblue;
-      color: black;
-      margin-top: 10px;
-      margin-bottom: 20px;
     }
     .index-container {
       display: flex;
@@ -68,20 +65,45 @@
       margin-top: 10px;
       justify-content: center;
     }
+
+    /* NEW: simple container for the Temp label + card */
+    .temp-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .temp-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
-  <canvas class="note-area" id="noteCanvas"></canvas>
+  <!-- Canvas for drawing -->
+  <div>
+    <h3>Notepad</h3>
+    <canvas class="note-area" id="noteCanvas"></canvas>
+  </div>
   <div class="main-content">
+    <h3>Cards</h3>
+    <!-- Card indexes -->
     <div class="index-container" id="indexes"></div>
+    <!-- Actual card container -->
     <div class="card-container" id="cards"></div>
-    <div class="temporary" id="temporary" draggable="true">Temp</div>
+
+    <!-- NEW: Temp label above the "temp card" -->
+    <div class="temp-container">
+      <div class="temp-label">Temp</div>
+      <div class="temporary" id="temporary" draggable="true">None</div>
+    </div>
+
     <div class="button-container">
       <button id="showButton">Show All Cards</button>
       <button id="hideButton">Hide All Cards</button>
       <button id="resetButton">Reset</button>
       <button id="clearDrawingButton">Clear Drawing</button>
-      <button id="eraserButton">Eraser OFF</button> <!-- Toggle eraser -->
+      <button id="eraserButton">Eraser OFF</button>
     </div>
   </div>
 
@@ -97,13 +119,13 @@
     const canvas = document.getElementById('noteCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Drawing/Eraser state
+    // Drawing/Eraser states
     let isDrawing = false;
     let isErasing = false;
     let lastX = 0;
     let lastY = 0;
 
-    // Define separate line widths for pen and eraser
+    // Pen and eraser thickness
     const penLineWidth = 2;
     const eraserLineWidth = penLineWidth * 5;
 
@@ -119,19 +141,17 @@
     eraserButton.addEventListener('click', () => {
       isErasing = !isErasing;
       if (isErasing) {
-        // Use 'destination-out' to erase and a thicker line
-        ctx.globalCompositeOperation = 'destination-out';
+        ctx.globalCompositeOperation = 'destination-out'; // Erasing
         ctx.lineWidth = eraserLineWidth;
         eraserButton.textContent = 'Eraser ON';
       } else {
-        // Return to normal drawing
-        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalCompositeOperation = 'source-over';     // Drawing
         ctx.lineWidth = penLineWidth;
         eraserButton.textContent = 'Eraser OFF';
       }
     });
 
-    // Freehand drawing/erasing with pointer events
+    // Pointer events for drawing/erasing
     canvas.addEventListener('pointerdown', (e) => {
       isDrawing = true;
       [lastX, lastY] = [e.offsetX, e.offsetY];
@@ -154,9 +174,10 @@
       isDrawing = false;
     });
 
-    // Card drag-and-drop variables
+    // Drag-and-drop variables
     let draggedCard = null;
 
+    // Create a single card with a random value
     function createCard(value) {
       const card = document.createElement('div');
       card.classList.add('card');
@@ -165,6 +186,7 @@
       card.textContent = "?";
       card.draggable = true;
 
+      // Click to flip card
       card.addEventListener('click', () => {
         if (card.dataset.flipped === "false") {
           card.textContent = card.dataset.value;
@@ -175,20 +197,26 @@
         }
       });
 
+      // Dragstart: capture this card as being dragged
       card.addEventListener('dragstart', (e) => {
         draggedCard = card;
         e.dataTransfer.setData("text/plain", card.dataset.value);
       });
 
+      // Allow drops
       card.addEventListener('dragover', (e) => {
         e.preventDefault();
       });
 
+      // If another card (or temp) is dropped here, we copy its value
       card.addEventListener('drop', (e) => {
         e.preventDefault();
         if (draggedCard) {
-          let newValue = draggedCard.dataset ? draggedCard.dataset.value : draggedCard.textContent;
-          if (newValue && newValue !== "Temp") {
+          let newValue = draggedCard.dataset 
+            ? draggedCard.dataset.value 
+            : draggedCard.textContent;
+          // If it's actually a numeric or valid value, not "Temp"/"None"
+          if (newValue && newValue !== "Temp" && newValue !== "None") {
             card.dataset.value = newValue;
             if (card.dataset.flipped === "true") {
               card.textContent = newValue;
@@ -200,28 +228,41 @@
       return card;
     }
 
+    // TEMP CARD: starts as "None" internally
+    // The label "Temp" is shown separately above it in the HTML
+    tempCard.dataset.value = "None";
+
+    // Only allow dragging if it has a valid value (not "None")
     tempCard.addEventListener('dragstart', (e) => {
-      if (tempCard.textContent !== "Temp") {
+      if (tempCard.dataset.value !== "None") {
         draggedCard = tempCard;
         e.dataTransfer.setData("text/plain", tempCard.dataset.value);
+      } else {
+        // If it's "None," block the drag
+        e.preventDefault();
       }
     });
 
+    // Let it accept drops
     tempCard.addEventListener('dragover', (e) => {
       e.preventDefault();
     });
 
+    // On drop, set our text and dataset value to the dragged card’s value
     tempCard.addEventListener('drop', (e) => {
       e.preventDefault();
       if (draggedCard) {
-        let newValue = draggedCard.dataset ? draggedCard.dataset.value : draggedCard.textContent;
-        if (newValue && newValue !== "Temp") {
-          tempCard.textContent = newValue;
+        let newValue = draggedCard.dataset 
+          ? draggedCard.dataset.value 
+          : draggedCard.textContent;
+        if (newValue && newValue !== "Temp" && newValue !== "None") {
+          tempCard.textContent = newValue; // Show the numeric value
           tempCard.dataset.value = newValue;
         }
       }
     });
 
+    // Generate an array of unique random values
     function generateUniqueNumbers(count, min, max) {
       let numbers = new Set();
       while (numbers.size < count) {
@@ -231,23 +272,32 @@
       return Array.from(numbers);
     }
 
+    // Create the initial set of cards
     function initializeCards() {
+      // Clear card container and indexes
       cardContainer.innerHTML = "";
       indexContainer.innerHTML = "";
+
+      // Generate 6 unique values
       let values = generateUniqueNumbers(6, 1, 20);
       values.forEach((value, index) => {
+        // Create an index label
         let indexLabel = document.createElement('div');
         indexLabel.classList.add('index');
         indexLabel.textContent = index;
         indexContainer.appendChild(indexLabel);
 
+        // Create a card with the random value
         let card = createCard(value);
         cardContainer.appendChild(card);
       });
-      tempCard.textContent = "Temp";
-      tempCard.dataset.value = "";
+
+      // Reset the temp card's text & dataset
+      tempCard.textContent = "None";
+      tempCard.dataset.value = "None";
     }
 
+    // Show all card values
     showButton.addEventListener('click', () => {
       document.querySelectorAll('.card').forEach(card => {
         card.textContent = card.dataset.value;
@@ -255,6 +305,7 @@
       });
     });
 
+    // Hide all card values
     hideButton.addEventListener('click', () => {
       document.querySelectorAll('.card').forEach(card => {
         card.textContent = "?";
@@ -262,13 +313,15 @@
       });
     });
 
+    // Reset cards
     resetButton.addEventListener('click', initializeCards);
 
+    // Clear the canvas
     clearDrawingButton.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 
-    // Initialize everything once the page loads
+    // Initialize the deck and temp card on page load
     initializeCards();
   </script>
 </body>
