@@ -1,0 +1,50 @@
+[debug] [2025-04-01T18:40:10.189Z] ----------------------------------------------------------------------
+[debug] [2025-04-01T18:40:10.194Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\CarrollS\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-04-01T18:40:10.194Z] CLI Version:   14.0.1
+[debug] [2025-04-01T18:40:10.194Z] Platform:      win32
+[debug] [2025-04-01T18:40:10.194Z] Node Version:  v22.14.0
+[debug] [2025-04-01T18:40:10.195Z] Time:          Tue Apr 01 2025 19:40:10 GMT+0100 (British Summer Time)
+[debug] [2025-04-01T18:40:10.195Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-01T18:40:10.206Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-01T18:40:10.206Z] > authorizing via signed-in user (hedtwocode@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Code\GitHub\src\dc-carrolls.github.io
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-04-01T18:44:27.033Z] Checked if tokens are valid: true, expires at: 1743536352351
+[debug] [2025-04-01T18:44:27.034Z] Checked if tokens are valid: true, expires at: 1743536352351
+[debug] [2025-04-01T18:44:27.035Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-04-01T18:44:27.570Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-04-01T18:44:27.570Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project simple-algorithms-demo (simple-algorithms-demo) 
+[info] 
+=== Hosting Setup
+[debug] [2025-04-01T18:44:30.239Z] Checked if tokens are valid: true, expires at: 1743536352351
+[debug] [2025-04-01T18:44:30.239Z] Checked if tokens are valid: true, expires at: 1743536352351
+[debug] [2025-04-01T18:44:30.239Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/simple-algorithms-demo [none]
+[debug] [2025-04-01T18:44:30.461Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/simple-algorithms-demo 200
+[debug] [2025-04-01T18:44:30.461Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/simple-algorithms-demo {"projectId":"simple-algorithms-demo","projectNumber":"210216206341","displayName":"simple-algorithms-demo","name":"projects/simple-algorithms-demo","resources":{"hostingSite":"simple-algorithms-demo"},"state":"ACTIVE","etag":"1_08347379-6276-4cf6-b2f7-7079a1ca26ff"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
