@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Seat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background-color: #eaf6ff;
+    }
+    .form-container {
+      background-color: white;
+      padding: 1.5em;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label, input {
+      display: block;
+      margin: 0.5em 0;
+    }
+    button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      border: none;
+      background-color: #007acc;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Select Your Seat</h2>
+    <form id="seatForm" action="booking-server.html" method="get" onsubmit="return validateForm()">
+      <label for="row">Row (1–30):</label>
+      <input type="text" id="row" name="row" required>
+
+      <label for="seat">Seat (A–F):</label>
+      <input type="text" id="seat" name="seat" required>
+
+      <button type="submit">Book Seat</button>
+      <p class="error" id="errorMsg"></p>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const row = document.getElementById('row').value;
+      const seat = document.getElementById('seat').value.toUpperCase();
+      const errorMsg = document.getElementById('errorMsg');
+      const validSeat = ['A','B','C','D','E','F']
+
+
+      if (isNaN(row) || row < 1 || row > 30) {
+        errorMsg.textContent = 'Row must be a number between 1 and 30.';
+        return false;
+      }
+
+      if (!validSeat.includes(seat)) {
+        errorMsg.textContent = 'Seat must be a letter from A to F.';
+        return false;
+      }
+
+      // Clear any previous error
+      errorMsg.textContent = '';
+      // Allow form submission
+      return true;
+    }
+  </script>
+</body>
+</html>

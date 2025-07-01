@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seat Booking Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background-color: #f2f2f2;
+    }
+    .booking-details {
+      background-color: white;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+      text-align: center;
+    }
+    .seat {
+      font-size: 2em;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-details">
+    <h2>Your Seat Booking</h2>
+    <p class="seat" id="seatDisplay">Loading seat info...</p>
+  </div>
+
+  <script>
+    // Parse query string
+    const params = new URLSearchParams(window.location.search);
+    const row = params.get('row');
+    const seat = params.get('seat');
+
+    const seatDisplay = document.getElementById('seatDisplay');
+
+    if (row && seat) {
+      seatDisplay.textContent = `Row ${row}, Seat ${seat}`;
+    } else {
+      seatDisplay.textContent = 'Seat information is missing from the URL.';
+    }
+  </script>
+</body>
+</html>

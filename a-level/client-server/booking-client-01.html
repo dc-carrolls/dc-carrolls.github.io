@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Your Seat</title>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div>
+    <h2>Book Your Seat</h2>
+    <form id="seatForm" action="booking-server.html" method="get" onsubmit="return validateForm()">
+      Row (1–30):
+      <input type="text" id="row" name="row"><br>
+
+      Seat (A–F):
+      <input type="text" id="seat" name="seat"><br>
+
+      <input type="submit">
+      <p id="errorMsg"></p>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      return true;
+    }
+  </script>
+</body>
+</html>
