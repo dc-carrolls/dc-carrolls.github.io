@@ -1,0 +1,22 @@
+
+body {
+    background-color :lightblue 
+}
+
+#row {
+    color:darkblue;
+}
+
+
+.invalid {
+    border-color: crimson;
+}
+/* These are the CSS properties you should be familiar with
+border-style 
+border-width 
+color 
+font-family 
+font-size 
+height 
+width
+*/

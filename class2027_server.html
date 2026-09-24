@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+
+    Booked Seat <span id="output"></span><br>
+    <a href="class2027_client.html">Back</a>
+
+    
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const row = params.get('row');
+    const seat = params.get('seat');
+    var output = document.getElementById("output");
+    output.innerHTML = row+seat;
+
+
+  </script>
+</body>
+
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function timesTable(){
+                var table = document.getElementById("table").value; 
+                var strOutput = "";
+                let i
+                for (i=1;i<10;i++){
+                    strOutput = strOutput + "<p>" + i + "</p>";
+
+                }
+             
+                var output = document.getElementById("output")
+
+
+                output.innerHTML = strOutput + "<p>" + i + "</p>"
+                return false;
+            }
+        </script> 
+    </head>
+
+    <body>
+        <h1> Times Table Generator</h1>
+        <form action="./test.html" onsubmit="return timesTable()"> 
+        
+            <p>Table<input type="text" id="table" value="0"></p>
+            <p>Rows<input type="text" id="rows" value="0"></p>
+            <p><input type="submit"></p>
+        </form>
+        <p id="output"></p>   
+            
+    </body>
+</html>

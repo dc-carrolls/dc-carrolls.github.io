@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A-Level CS Code Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f0e8;
+    --paper: #fdfaf4;
+    --ink: #1a1510;
+    --muted: #7a6e62;
+    --accent: #c84b2f;
+    --accent2: #2f6e4b;
+    --border: #d8cfc2;
+    --well: #eae4d8;
+    --shadow: rgba(26,21,16,0.08);
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 28px 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  header span {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    min-height: calc(100vh - 75px);
+  }
+
+  /* LEFT PANEL */
+  .sidebar {
+    background: var(--paper);
+    border-right: 1px solid var(--border);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  textarea {
+    width: 100%;
+    background: var(--well);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink);
+    resize: vertical;
+    line-height: 1.6;
+    transition: border-color 0.15s;
+  }
+
+  textarea:focus { outline: none; border-color: var(--accent); }
+  textarea::placeholder { color: var(--muted); }
+
+  .context-block { display: flex; flex-direction: column; }
+
+  .save-btn {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    padding: 10px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+    margin-top: 8px;
+    align-self: flex-start;
+  }
+  .save-btn:hover { background: var(--accent); }
+
+  .saved-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    color: var(--accent2);
+    margin-top: 6px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .saved-badge.show { opacity: 1; }
+
+  /* RIGHT PANEL */
+  .main {
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+  }
+
+  .review-input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .student-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .student-row input[type="text"] {
+    flex: 1;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 11px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .student-row input:focus { outline: none; border-color: var(--accent); }
+  .student-row input::placeholder { color: var(--muted); }
+
+  .student-row input.name-input {
+    flex: 0 0 160px;
+  }
+
+  .review-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+  .review-btn:hover { opacity: 0.85; }
+  .review-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .add-student-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    padding: 9px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: border-color 0.15s, color 0.15s;
+    align-self: flex-start;
+  }
+  .add-student-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* RESULTS */
+  .results-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feedback-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-header .student-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .card-header .repo-link {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .card-header .repo-link:hover { color: var(--bg); }
+
+  .card-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .feedback-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .feedback-section h3 {
+    font-size: 0.65rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .feedback-section h3.positive { color: var(--accent2); }
+  .feedback-section h3.improve { color: var(--accent); }
+
+  .feedback-section ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feedback-section ul li {
+    font-size: 0.77rem;
+    line-height: 1.6;
+    padding: 8px 12px;
+    border-radius: 3px;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .feedback-section ul li::before {
+    content: '—';
+    position: absolute;
+    left: 6px;
+    color: var(--muted);
+  }
+
+  .positive li { background: #eef5f1; color: #1a3d2b; }
+  .improve li { background: #fdf0ed; color: #5c1e10; }
+
+  .loading-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-card {
+    background: #fdf0ed;
+    border: 1px solid #f5c4bb;
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  .summary-note {
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  .context-status {
+    font-size: 0.68rem;
+    color: var(--muted);
+    padding: 8px 12px;
+    background: var(--well);
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .context-status.ok { color: var(--accent2); background: #eef5f1; border-color: #b8d9c6; }
+
+  .apikey-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .apikey-row input {
+    flex: 1;
+    background: var(--well);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .apikey-row input:focus { outline: none; border-color: var(--accent); }
+
+  .toggle-key {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .toggle-key:hover { border-color: var(--ink); color: var(--ink); }
+
+  .apikey-hint {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .apikey-hint a { color: var(--muted); }
+
+  .folder-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+
+  .folder-label {
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .folder-row input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink);
+  }
+  .folder-row input:focus { outline: none; }
+  .folder-row input::placeholder { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Code Reviewer</h1>
+  <span>A-Level Computer Science</span>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR: Course Context -->
+  <aside class="sidebar">
+    <div class="context-block">
+      <div class="section-label">Anthropic API Key</div>
+      <div class="apikey-row">
+        <input id="api-key" type="password" placeholder="sk-ant-..." autocomplete="off" />
+        <button class="toggle-key" onclick="toggleKey()">Show</button>
+      </div>
+      <div class="apikey-hint">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> — stays in your browser only.</div>
+    </div>
+
+    <div>
+      <div class="section-label">Course Context</div>
+      <div id="context-status" class="context-status">Fill in the fields below and save.</div>
+    </div>
+
+    <div class="context-block">
+      <div class="section-label">Programming Exercise</div>
+      <textarea id="exercise" rows="6" placeholder="Describe the task students were asked to complete..."></textarea>
+    </div>
+
+    <div class="context-block">
+      <div class="section-label">A-Level Specification Points</div>
+      <textarea id="spec" rows="6" placeholder="Paste relevant spec points, learning objectives, or assessment criteria..."></textarea>
+    </div>
+
+    <div class="context-block">
+      <div class="section-label">Coding Standards</div>
+      <textarea id="standards" rows="5" placeholder="e.g. meaningful variable names, comments, no magic numbers, functions should be < 20 lines..."></textarea>
+    </div>
+
+    <div>
+      <button class="save-btn" onclick="saveContext()">Save Context</button>
+      <span id="saved-badge" class="saved-badge">✓ Saved</span>
+    </div>
+  </aside>
+
+  <!-- MAIN: Student Reviews -->
+  <main class="main">
+    <div class="review-input-row">
+      <div class="section-label">Student Repositories</div>
+      <div class="folder-row">
+        <label class="folder-label">Subfolder to review</label>
+        <input id="folder-input" type="text" placeholder="e.g. exercise_1 or unit2/tasks  (leave blank for whole repo)" />
+      </div>
+      <div id="student-rows">
+        <div class="student-row">
+          <input class="name-input" type="text" placeholder="Student name" />
+          <input type="text" placeholder="https://github.com/student/repo" />
+          <button class="review-btn" onclick="reviewStudent(this)">Review</button>
+        </div>
+      </div>
+      <button class="add-student-btn" onclick="addStudentRow()">+ Add student</button>
+    </div>
+
+    <div class="results-area" id="results"></div>
+  </main>
+
+</div>
+
+<script>
+  let context = { exercise: '', spec: '', standards: '' };
+
+  function toggleKey() {
+    const input = document.getElementById('api-key');
+    const btn = document.querySelector('.toggle-key');
+    if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+    else { input.type = 'password'; btn.textContent = 'Show'; }
+  }
+
+  function saveContext() {
+    context.exercise = document.getElementById('exercise').value.trim();
+    context.spec = document.getElementById('spec').value.trim();
+    context.standards = document.getElementById('standards').value.trim();
+
+    const status = document.getElementById('context-status');
+    const badge = document.getElementById('saved-badge');
+
+    if (!context.exercise && !context.spec && !context.standards) {
+      status.textContent = 'Fill in at least one field above.';
+      status.className = 'context-status';
+      return;
+    }
+
+    const parts = [];
+    if (context.exercise) parts.push('exercise');
+    if (context.spec) parts.push('spec');
+    if (context.standards) parts.push('standards');
+    status.textContent = `✓ Context saved: ${parts.join(', ')}`;
+    status.className = 'context-status ok';
+
+    badge.classList.add('show');
+    setTimeout(() => badge.classList.remove('show'), 2000);
+  }
+
+  function addStudentRow() {
+    const container = document.getElementById('student-rows');
+    const row = document.createElement('div');
+    row.className = 'student-row';
+    row.innerHTML = `
+      <input class="name-input" type="text" placeholder="Student name" />
+      <input type="text" placeholder="https://github.com/student/repo" />
+      <button class="review-btn" onclick="reviewStudent(this)">Review</button>
+    `;
+    container.appendChild(row);
+    row.querySelector('input.name-input').focus();
+  }
+
+  function getGithubRawBase(url) {
+    // Convert github.com URL to raw content URL for file listing
+    url = url.trim().replace(/\/$/, '').replace(/\.git$/, '');
+    const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+    if (!match) return null;
+    return { owner: match[1], repo: match[2] };
+  }
+
+  async function fetchRepoContents(owner, repo, path = '') {
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const res = await fetch(apiUrl, { headers: { Accept: 'application/vnd.github.v3+json' } });
+    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+    return res.json();
+  }
+
+  async function fetchFileContent(downloadUrl) {
+    const res = await fetch(downloadUrl);
+    if (!res.ok) throw new Error('Could not fetch file');
+    return res.text();
+  }
+
+  async function collectPythonFiles(owner, repo, path = '', depth = 0) {
+    if (depth > 3) return [];
+    const items = await fetchRepoContents(owner, repo, path);
+    let files = [];
+    for (const item of items) {
+      if (item.type === 'file' && item.name.endsWith('.py')) {
+        const content = await fetchFileContent(item.download_url);
+        files.push({ path: item.path, content });
+      } else if (item.type === 'dir' && !item.name.startsWith('.')) {
+        const sub = await collectPythonFiles(owner, repo, item.path, depth + 1);
+        files = files.concat(sub);
+        if (files.length > 15) break; // safety limit
+      }
+    }
+    return files;
+  }
+
+  async function reviewStudent(btn) {
+    const apiKey = document.getElementById('api-key').value.trim();
+    if (!apiKey) { alert('Please enter your Anthropic API key in the sidebar.'); return; }
+
+    const row = btn.closest('.student-row');
+    const nameInput = row.querySelector('input.name-input');
+    const repoInput = row.querySelector('input[type="text"]:not(.name-input)');
+    const name = nameInput.value.trim() || 'Student';
+    const repoUrl = repoInput.value.trim();
+
+    if (!repoUrl) { alert('Please enter a GitHub repo URL.'); return; }
+
+    const parsed = getGithubRawBase(repoUrl);
+    if (!parsed) { alert('Invalid GitHub URL. Use format: https://github.com/username/repo'); return; }
+
+    const folder = document.getElementById('folder-input').value.trim().replace(/^\/|\/$/g, '');
+
+    btn.disabled = true;
+    const results = document.getElementById('results');
+
+    // Remove previous card for this student if exists
+    const existingId = `card-${name.replace(/\s+/g, '-')}`;
+    const existing = document.getElementById(existingId);
+    if (existing) existing.remove();
+
+    const loadingCard = document.createElement('div');
+    loadingCard.className = 'loading-card';
+    loadingCard.id = existingId;
+    const folderLabel = folder ? ` → <code>${folder}</code>` : '';
+    loadingCard.innerHTML = `<div class="spinner"></div><span>Fetching repo for <strong>${name}</strong>${folderLabel}...</span>`;
+    results.prepend(loadingCard);
+
+    try {
+      const files = await collectPythonFiles(parsed.owner, parsed.repo, folder);
+      if (files.length === 0) throw new Error('No Python files found in this repository.');
+
+      loadingCard.querySelector('span').innerHTML = `<div class="spinner"></div> Analysing ${files.length} file(s) with AI...`;
+
+      const codeBlock = files.map(f => `### File: ${f.path}\n\`\`\`python\n${f.content}\n\`\`\``).join('\n\n');
+
+      const systemPrompt = `You are an experienced A-Level Computer Science teacher giving constructive, encouraging code feedback to a student. Be specific, honest, and educationally useful. Focus on what matters most for their learning.`;
+
+      const contextParts = [];
+      if (context.exercise) contextParts.push(`EXERCISE:\n${context.exercise}`);
+      if (context.spec) contextParts.push(`A-LEVEL SPECIFICATION POINTS:\n${context.spec}`);
+      if (context.standards) contextParts.push(`CODING STANDARDS:\n${context.standards}`);
+
+      const userPrompt = `${contextParts.length ? contextParts.join('\n\n') + '\n\n' : ''}Here is the student's Python code from their GitHub repository:\n\n${codeBlock}\n\nProvide feedback as a JSON object with exactly this structure:
+{
+  "went_well": ["point 1", "point 2", "point 3"],
+  "to_improve": ["point 1", "point 2", "point 3"],
+  "summary": "One encouraging sentence summarising overall performance."
+}
+
+Each point should be specific and reference actual code. 3-5 points per section. Return ONLY the JSON, no markdown, no preamble.`;
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }]
+        })
+      });
+
+      const data = await response.json();
+      const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+      const feedback = JSON.parse(raw);
+
+      const card = document.createElement('div');
+      card.className = 'feedback-card';
+      card.id = existingId;
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="student-name">${name}</span>
+          <a class="repo-link" href="${repoUrl}" target="_blank">${parsed.owner}/${parsed.repo} ↗</a>
+        </div>
+        <div class="card-body">
+          <div class="feedback-section positive">
+            <h3 class="positive">✓ &nbsp;What Went Well</h3>
+            <ul class="positive">${feedback.went_well.map(p => `<li>${p}</li>`).join('')}</ul>
+          </div>
+          <div class="feedback-section improve">
+            <h3 class="improve">△ &nbsp;To Improve</h3>
+            <ul class="improve">${feedback.to_improve.map(p => `<li>${p}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div class="summary-note">${feedback.summary}</div>
+      `;
+
+      loadingCard.replaceWith(card);
+    } catch (err) {
+      const errCard = document.createElement('div');
+      errCard.className = 'error-card';
+      errCard.id = existingId;
+      errCard.textContent = `Error reviewing ${name}: ${err.message}`;
+      loadingCard.replaceWith(errCard);
+    }
+
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>

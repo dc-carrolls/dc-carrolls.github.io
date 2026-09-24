@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Booking Form</title>
+<link  rel="stylesheet" type="text/css" href="class2027.css">
+<script>
+
+
+</script>
+</head>
+<body>
+    <h1 style="font-size: larger; color: crimson;">Booking Form</h1>
+    <form action="class2027_server.html"  onsubmit="return validate();">
+    Row: <input  id="row" name="row"><br>
+    Seat:<input  id="seat" name="seat"><br><br>
+       <input type="submit" >
+       <input type="reset">        
+    </form>
+    <div id="output"></div>
+
+    
+    
+    <script>
+        function validate(){
+            resetFrm()
+            var output = document.getElementById("output");
+            const row = document.getElementById("row");
+            const rowVal = parseInt(row.value)
+            const set = document.getElementById("seat");
+            const seatVal = seat.value
+            const validLetters = ["A", "B", "C", "D", "E", "F"];
+
+            var valid = true;
+            if (!validLetters.includes(seatVal)) {
+                valid=false
+                output.innerHTML += "<p>Invalid Seat</p>";
+                seat.classList.add("invalid");
+            }
+            if (!(rowVal > 0 && rowVal < 31)) {
+                output.innerHTML += "Invalid Row";
+                row.classList.add("invalid");
+                valid = false;                  
+            }
+            return valid;
+        }
+
+        function resetFrm() {
+            var output = document.getElementById("output");
+            var row = document.getElementById("row");
+            var seat = document.getElementById("seat");
+            output.innerHTML = "";
+            row.classList.remove("invalid"); 
+            seat.classList.remove("invalid"); 
+        }
+
+
+
+    </script>
+
+
+
+
+</body>
+
+
+
+</html>
